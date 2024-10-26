@@ -22,11 +22,11 @@ This will print the csv file into the command line, to capture it
 
 ## 50.000 Zeichen 14 deep n-gram
 g++ -O3 main.cpp -o nugram
-
+```
 Executed in  338.88 millis    fish           external
    usr time  214.35 millis    0.00 millis  214.35 millis
    sys time  124.61 millis    4.04 millis  120.57 millis
-
+```
 ## Result
 - The first column are the n-grams(which at least in my version
 contain white spaces).
