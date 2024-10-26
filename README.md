@@ -20,6 +20,14 @@ This will print the csv file into the command line, to capture it
 
 # Speed
 
+## Wikipedia dump(20167648277 Zeichen = 20GiB) 14 deapth n-gram
+g++ -O4 main.cpp
+```
+Executed in    7.67 secs    fish           external
+   usr time    3.52 secs    0.00 millis    3.52 secs
+   sys time    3.62 secs    1.85 millis    3.61 secs
+```
+
 ## 50.000 Zeichen 14 deep n-gram
 g++ -O3 main.cpp -o nugram
 ```
