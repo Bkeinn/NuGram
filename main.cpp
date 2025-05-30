@@ -4,26 +4,29 @@
 
 #include <bits/stdc++.h>
 
-int width;
-int min_ascii;
-int max_ascii;
+// !!!! This deapth is changeable and gives the maximum of n-gram deapth it is searching for
+const int min_ascii = 32;
+const int max_ascii = 126;
+const int width = 128 - min_ascii;
+const int deapth = 5;
 
 struct Tree {
   int passes;
-  std::vector<Tree*> next;
+  std::array<Tree*, 256> next;
 
-  Tree(int width) : passes(0), next(width ,nullptr) {};
+  Tree() : passes(0) {};
 };
 
 Tree* add(Tree* root, char character) {
-  if (root->next[character] == nullptr) {
-    root->next[character] = new Tree(width);
+  if (root->next[character - min_ascii] == nullptr) {
+    root->next[character - min_ascii] = new Tree();
+    // std::cout << character << std::endl;
   }
-  root->next[character]->passes++;
-  return root->next[character];
+  root->next[character - min_ascii]->passes++;
+  return root->next[character - min_ascii];
 }
 
-void adder(std::vector<char> vec, Tree* root){
+void adder(std::array<char, deapth> vec, Tree* root){
   if (vec[0] == 0){
     return;
   }
@@ -44,16 +47,10 @@ void printtree(Tree* root, std::string s){
 }
 
 int main(){
-  // !!!! This deapth is changeable and gives the maximum of n-gram deapth it is searching for
-  int deapth = 14;
-  width = 128;
-  min_ascii = 32;
-  max_ascii = 126;
-   
   char ch;
-  std::vector<char> context(deapth, 0);
+  std::array<char,deapth> context;
 
-  Tree* ngram = new Tree(width);
+  Tree* ngram = new Tree();
 
   while (std::cin.get(ch)){
       if(int(ch) >= min_ascii && int(ch) <= max_ascii){
@@ -66,7 +63,7 @@ int main(){
       }
   }
 
-  //printtree(ngram, "'");
+  printtree(ngram, "'");
   
   return 0;
 }
