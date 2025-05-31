@@ -77,13 +77,13 @@ void saver_exporter() {
     }
   } custom;
   std::sort(saver.begin(), saver.end(), custom);
-  // for(const Data& d : saver){
-  //   std::cout << '\'' << d.data << "'," << d.count << ',' << d.value << '\n';
-  // }
-  for(int i = 0;i < output_deapth - 1; i++) {
-    std::cout << saver[i].data << ',';
+  for(const Data& d : saver){
+    std::cout << '\'' << d.data << "'," << d.count << ',' << d.value << '\n';
   }
-  std::cout << saver[output_deapth - 1].data << std::endl;
+  // for(int i = 0;i < output_deapth - 1; i++) {
+  //   std::cout << saver[i].data << ',';
+  // }
+  // std::cout << saver[output_deapth - 1].data << std::endl;
 }
 
 int main(){
