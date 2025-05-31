@@ -34,14 +34,34 @@ contain white spaces).
 in the text.
 - Third (length - 1) * how_often
 
+> The output is allready sorted by the last collumn
+### For furhter use
+If you set the output_deapth parameter and uncomment/comment these lines
+```cpp
+  // for(int i = 0;i < output_deapth - 1; i++) {
+  //   std::cout << saver[i].data << ',';
+  // }
+  // std::cout << saver[output_deapth - 1].data << std::endl;
+```
+
+and comment these lines above
+```cpp
+  for(const Data& d : saver){
+    std::cout << '\'' << d.data << "'," << d.count << ',' << d.value << '\n';
+  }
+```
+It outputs a sorted list of the most common ngrams, sorted by the last collumn
+this, is very usefull for further use
+
 # Modify
 You are able to modify the program to your liking but the main
 handles one could tune are the deapth to witch n-grams are searched for and
 witch characters the program is searching for. 
 The are all defined at the beginning of the main funktion.
 ```cpp
-int deapth = 14;
-width = 128;
-min_ascii = 32;
-max_ascii = 126;
+const int min_ascii = 32;
+const int max_ascii = 126;
+const int width = 128 - min_ascii;
+const int deapth = 5;
+const int output_deapth = 253*2;
 ```
