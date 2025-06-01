@@ -1,67 +1,72 @@
-# What is it
-This code, takes in text through the unix pipe and spits out 
-an csv that shows how often each n-gram appeard in the text. 
+Sure, here is an updated version of your README:
 
-# How to use
-Compile the program with
-```
-https://github.com/Bkeinn/NuGram.git
+```markdown
+# NuGram
+
+This repository contains two C++ programs for processing text and creating datasets based on n-grams.
+
+## Nugram
+
+This program reads text from standard input and outputs a CSV file showing the frequency of each n-gram in the text.
+
+### Compilation
+
+```sh
+git clone https://github.com/Bkeinn/NuGram.git
 cd NuGram
 g++ -O3 main.cpp -o nugram
 ```
-The you have to execute the program and pipe a file to it
-```
-./nugram < textfile.txt  
-```
-This will print the csv file into the command line, to capture it
-```
-./nugram < testfile.txt > result.csv
+
+### Usage
+
+```sh
+./nugram < textfile.txt
 ```
 
-# Speed
+To capture the output to a file:
 
-## 50.000 Zeichen 14 deep n-gram
-g++ -O3 main.cpp -o nugram
-```
-Executed in  338.88 millis    fish           external
-   usr time  214.35 millis    0.00 millis  214.35 millis
-   sys time  124.61 millis    4.04 millis  120.57 millis
-```
-## Result
-- The first column are the n-grams(which at least in my version
-contain white spaces).
-- Second column how often these n-grams appeard
-in the text.
-- Third (length - 1) * how_often
-
-> The output is allready sorted by the last collumn
-### For furhter use
-If you set the output_deapth parameter and uncomment/comment these lines
-```cpp
-  // for(int i = 0;i < output_deapth - 1; i++) {
-  //   std::cout << saver[i].data << ',';
-  // }
-  // std::cout << saver[output_deapth - 1].data << std::endl;
+```sh
+./nugram < textfile.txt > result.csv
 ```
 
-and comment these lines above
-```cpp
-  for(const Data& d : saver){
-    std::cout << '\'' << d.data << "'," << d.count << ',' << d.value << '\n';
-  }
-```
-It outputs a sorted list of the most common ngrams, sorted by the last collumn
-this, is very usefull for further use
+## Dataset Creator
 
-# Modify
-You are able to modify the program to your liking but the main
-handles one could tune are the deapth to witch n-grams are searched for and
-witch characters the program is searching for. 
-The are all defined at the beginning of the main funktion.
+This program takes the output of Nugram and a text file, then creates an HDF5 dataset where each token is surrounded by the tokens appearing in the original text.
+
+### Compilation
+
+```sh
+git clone https://github.com/Bkeinn/NuGram.git
+cd NuGram
+g++ -std=c++11 -O2 -o tokenize_and_build dataset_creator.cpp -lhdf5_cpp -lhdf5
+```
+
+### Usage
+
+```sh
+./tokenize_and_build <ngrams_file> <input_text_file> <output_hdf5_file>
+```
+
+### Dataset Structure
+
+The dataset has two main components:
+- `/tokens/id_to_ngram`: A 1D dataset assigning variable-length strings to a token ID.
+- `/contexts/ctx_<ID>`: An expandable Nx8 INT32 dataset per token ID, collecting all surrounding tokens.
+
+## Parameters
+
+You can modify the following parameters at the beginning of the `main` function in `main.cpp`:
+
 ```cpp
 const int min_ascii = 32;
 const int max_ascii = 126;
-const int width = 128 - min_ascii;
 const int deapth = 5;
-const int output_deapth = 253*2;
+const int output_deapth = 253 * 2;
+const long long purge_threshold = 1'000;
+const long long purge_interval = 1'000'000;
+```
+
+## Output
+
+The output of Nugram is sorted by the third column, which is `(length - 1) * frequency`. This is useful for further processing.
 ```
